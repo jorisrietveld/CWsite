@@ -1,0 +1,2 @@
+Een 'Tijdelijke' class voor het ophalen van de gegevens en locaties van uploads.
+Een soort placeholder, en daarna zal stefan echte data ophalen.

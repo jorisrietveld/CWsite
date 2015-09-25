@@ -1,0 +1,32 @@
+#contentvak .project
+{
+	background-color:#f08b28;	
+}
+
+#contentvak h2 .highlight
+{
+	color:#f08b28;	
+}
+
+#nav ul #menublock_selected
+{
+	background-color:#f08b28;	
+}
+#slider
+{
+	background-color:#f08b28;	
+}
+
+.ContentLeft {
+	/* border: 1px solid #f08b28; */
+	border-radius: 3px;
+}
+
+.ContentRight {
+	/* border: 1px solid #f08b28; */
+	border-radius: 3px;
+}
+
+.OntwikkelaarsRight, .ContentLeft {
+	border: 2px solid #f08b28 !important;
+}
