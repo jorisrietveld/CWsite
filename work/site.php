@@ -1,4 +1,4 @@
-<?php // Edit by joris
+<?phptodo[edit joris]
 
 // First require an configuration file with some constants.
 require( "constants.php" );
@@ -10,8 +10,31 @@ require( CAMPUSWERK_SITE_COMPOSER_DIR . "autoload.php" );
 <!DOCTYPE html "site created by campuswerk">
 <html>
 <head>
+	<!--
+		todo[edit joris].
+	 -->
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Softwarehuis NP</title>
+	<script src="js/jquery.js"></script>
+	<script src="js/jquery.cookie.js"></script>
+	<script src="js/jquery.slidemenu.js"></script>
+	<script src="js/jquery.themeswitcher.js"></script>
+	<script>
+		$(document).ready(function(){
+			$('#nav').slidemenu();
+		});
+	</script>
+	<link href="css/style.css" rel="stylesheet" type="text/css" />
+	<link id="theme" href="css/theme_default.css" rel="stylesheet" type="text/css" />
+
 	<?php
-	include( "includes/head.php" );//test
+	if(isset($_COOKIE['theme'])){
+		echo '<script>$(document).ready(function(){ $(\'#colorswitcher .'.$_COOKIE['theme'].'\').trigger(\'click\'); });</script>';
+	}
+	?>
+
+	<?php
+	 // todo[edit joris] include( "includes/head.php" );//test
 	?>
 </head>
 <body>
