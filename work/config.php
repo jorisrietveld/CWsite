@@ -2,10 +2,10 @@
 	class config
 	{
 		var $dbinfo  = array(
-			"dbuser" => "site",
-			"dbpass" => "site1234abcd",
-			"dbname" => "site",
-			"server" => "5.61.251.57",
+			"dbuser" => "root",
+			"dbpass" => "toor",
+			"dbname" => "cwite",
+			"server" => "127.0.0.1",
 			"prefix" => "s"
 		);
 	}

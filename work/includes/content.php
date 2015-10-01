@@ -1,9 +1,5 @@
 <?php
-	include('config.php');
-	require_once('classes/database.php');
-	$database = new database($config->dbinfo["server"],$config->dbinfo["dbuser"],$config->dbinfo["dbpass"],$config->dbinfo["dbname"]);
-
-	switch(@$_GET['id'])
+	switch( $_GET['id'])
 	{
 		default: case 1:
 			//home

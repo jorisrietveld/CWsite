@@ -1,4 +1,5 @@
-<?phptodo[edit joris]
+<?php
+//todo[ edit joris]
 
 // First require an configuration file with some constants.
 require( "constants.php" );
@@ -10,32 +11,25 @@ require( CAMPUSWERK_SITE_COMPOSER_DIR . "autoload.php" );
 <!DOCTYPE html "site created by campuswerk">
 <html>
 <head>
-	<!--
-		todo[edit joris].
-	 -->
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<title>Softwarehuis NP</title>
 	<script src="js/jquery.js"></script>
 	<script src="js/jquery.cookie.js"></script>
 	<script src="js/jquery.slidemenu.js"></script>
 	<script src="js/jquery.themeswitcher.js"></script>
 	<script>
-		$(document).ready(function(){
+		$(document).ready(function () {
 			$('#nav').slidemenu();
 		});
 	</script>
-	<link href="css/style.css" rel="stylesheet" type="text/css" />
-	<link id="theme" href="css/theme_default.css" rel="stylesheet" type="text/css" />
+	<link href="css/style.css" rel="stylesheet" type="text/css"/>
+	<link id="theme" href="css/theme_default.css" rel="stylesheet" type="text/css"/>
 
 	<?php
-	if(isset($_COOKIE['theme'])){
-		echo '<script>$(document).ready(function(){ $(\'#colorswitcher .'.$_COOKIE['theme'].'\').trigger(\'click\'); });</script>';
-	}
+	$script = '<script>$(document).ready(function(){ $(\'#colorswitcher .' . $_COOKIE[ 'theme' ] . '\').trigger(\'click\'); });</script>';
+	echo isset( $_COOKIE[ "theme" ] ) ? $script : '';
 	?>
 
-	<?php
-	 // todo[edit joris] include( "includes/head.php" );//test
-	?>
 </head>
 <body>
 <div id="container">
@@ -87,8 +81,23 @@ require( CAMPUSWERK_SITE_COMPOSER_DIR . "autoload.php" );
 	}
 	?>
 
-	<?php include( "includes/content.php" ); ?>
+	<?php
+	// todo[edit joris]
+	// include( "includes/content.php" );
+	require( "includes/pageSwitch.php" );
 
+	if( isset( $page ) )
+	{
+		if( is_file( $page ) )
+		{
+			include( $page );
+		}
+		else
+		{
+			echo "<h2>error: can't find file {$page}.";
+		}
+	}
+	?>
 </div>
 </body>
 </html>
