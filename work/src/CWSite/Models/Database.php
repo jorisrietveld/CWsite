@@ -10,9 +10,10 @@ namespace CWSite\Models;
 use CWSite\Helper\Message;
 use CWDatabase\DatabaseConnection;
 
+
 class Database
 {
-	const CONFIG_SITE_DB = "campusWerkSiteDatabase";
+	const CONFIG_SITE_DB = "CampuswerkSite";
 
 	/**
 	 * This holds the configuration array, parsed from {project_root}/Config/dbconfig.xml
@@ -38,13 +39,13 @@ class Database
 	 */
 	private function parseDatabaseConfig( $file = "" )
 	{
-		$file = ( strlen( $file ) < 1 ) ? PROJECT_ROOT . DIRECTORY_SEPARATOR . "Config". DIRECTORY_SEPARATOR ."dbconfig.xml" : $file;
+		$file = ( strlen( $file ) < 1 ) ? CAMPUSWERK_SITE_CONFIG_DIR . "dbconfig.xml" : $file;
 
 		$xmlConfigObject = simplexml_load_file( $file );
 
 		if( $xmlConfigObject == false )
 		{
-			throw new \Exception( Message::getMessage("database.exceptions.missingConfig") );
+			throw new \Exception( Message::getMessage( "database.exceptions.missingConfig" ) );
 		}
 
 		$this->config = (array)$xmlConfigObject->{self::CONFIG_SITE_DB};
@@ -57,6 +58,7 @@ class Database
 	protected function connectToDatabase()
 	{
 		$this->parseDatabaseConfig();
+		var_dump( $this->config);
 		$cwDatabaseConnection     = new DatabaseConnection( $this->config );
 		$this->databaseConnection = $cwDatabaseConnection->getConnection();
 	}
@@ -72,7 +74,6 @@ class Database
 		{
 			$this->connectToDatabase();
 		}
-
 		return $this->databaseConnection;
 	}
 
@@ -137,20 +138,22 @@ class Database
 
 	/**
 	 * Perform an prepared query on the database.
+	 *
 	 * @param $sql
 	 * @param $parameters
 	 */
-	public function query( $sql, $parameters )
+	public function query( $sql, $parameters = [ ] )
 	{
 		$statement = $this->databaseConnection->prepare( $sql );
-		$statement = (new \PDO(""))->prepare( $sql );
 
-		foreach( $parameters as $key => $parameter )
+		if( count( $parameters ) )
 		{
-			$statement->bindValue( ($key + 1), $parameter );
+			foreach( $parameters as $key => $parameter )
+			{
+				$statement->bindValue( ( $key + 1 ), $parameter );
+			}
 		}
 
 		return $statement->execute();
-
 	}
 }

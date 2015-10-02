@@ -13,7 +13,12 @@ class Message
 	const ERROR_MESSAGE_XML_PARSER    = "ErrorMessage error: Can't parse the error messages xml file.";
 	const ERROR_MESSAGE_UNDEFINED_KEY = "ErrorMessage error: The given key is not found in the error messages xml file.";
 
-	const XML_FILE_PATH = PROJECT_ROOT . DIRECTORY_SEPARATOR . "Config" . DIRECTORY_SEPARATOR . "messages.xml";
+	const XML_FILE_PATH = CAMPUSWERK_SITE_CONFIG_DIR . "messages.xml";
+
+	const PLACEHOLDER_START = "{{";
+	const PLACEHOLDER_END   = "}}";
+
+	const DEFAULT_MESSAGE_PLACEHOLDER = self::PLACEHOLDER_START . "var" . self::PLACEHOLDER_END;
 
 	/**
 	 * This method will return an message based on the key. the messages are defined in
@@ -23,18 +28,60 @@ class Message
 	 *
 	 * @return array
 	 */
-	public static function getMessage( $key )
+	public static function getMessage( $key, $placeholders = [ ] )
 	{
 		$messages = self::parseXmlFile();
 
 		$message = Arr::get( $messages, $key );
 
-		if( $message )
+		if( !$message )
 		{
-			return $message;
+			trigger_error( self::ERROR_MESSAGE_UNDEFINED_KEY, E_USER_ERROR );
+
+			return false;
 		}
-		trigger_error( self::ERROR_MESSAGE_UNDEFINED_KEY, E_USER_ERROR );
-		return false;
+
+		// If there are placeholders replace them with the values.
+		if( count( $placeholders ) )
+		{
+			$message = self::insertPlaceholders( $message, $placeholders );
+		}
+
+		return $message;
+	}
+
+	/**
+	 * This method replaces placeholders in messages with the value.
+	 *
+	 * You can insert placeholders as an associate like [ "placeholder1" => "value1" ] then it will search in the
+	 * message for {{placeholder1}} and replace it by value1.
+	 * Or you can insert placeholders by count like [ "val1", "val2" ] then it will search for
+	 * self::DEFAULT_MESSAGE_PLACEHOLDER and replace it with the value
+	 *
+	 * @param $string
+	 * @param $string
+	 * @param $placeholders
+	 *
+	 * @return mixed
+	 */
+	private static function insertPlaceholders( $string, $placeholders )
+	{
+		$message = $string;
+		if( Arr::isAssoc( $placeholders ) )
+		{
+			foreach( $placeholders as $key => $value )
+			{
+				$key = self::PLACEHOLDER_START . $key . self::PLACEHOLDER_END;
+
+				$message = str_replace( $key, $value, $string );
+			}
+		}
+		else
+		{
+			$message = Str::replaceArray( $string, self::DEFAULT_MESSAGE_PLACEHOLDER, $placeholders );
+		}
+
+		return $message;
 	}
 
 	/**
@@ -54,6 +101,7 @@ class Message
 		else
 		{
 			trigger_error( self::ERROR_MESSAGE_XML_PARSER, E_USER_ERROR );
+
 			return false;
 		}
 	}

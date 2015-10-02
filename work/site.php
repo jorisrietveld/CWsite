@@ -26,8 +26,8 @@ require( CAMPUSWERK_SITE_COMPOSER_DIR . "autoload.php" );
 	<link id="theme" href="css/theme_default.css" rel="stylesheet" type="text/css"/>
 
 	<?php
-	$script = '<script>$(document).ready(function(){ $(\'#colorswitcher .' . $_COOKIE[ 'theme' ] . '\').trigger(\'click\'); });</script>';
-	echo isset( $_COOKIE[ "theme" ] ) ? $script : '';
+		$script = '<script>$(document).ready(function(){ $(\'#colorswitcher .' . $_COOKIE[ 'theme' ] . '\').trigger(\'click\'); });</script>';
+		echo isset( $_COOKIE[ "theme" ] ) ? $script : '';
 	?>
 
 </head>
@@ -62,6 +62,7 @@ require( CAMPUSWERK_SITE_COMPOSER_DIR . "autoload.php" );
 	</div>
 
 	<?php
+	//TODO replace this
 	if( isset( $_GET[ 'id' ] ) )
 	{
 		$paginaid = $_GET[ 'id' ];
@@ -82,20 +83,22 @@ require( CAMPUSWERK_SITE_COMPOSER_DIR . "autoload.php" );
 	?>
 
 	<?php
-	// todo[edit joris]
-	// include( "includes/content.php" );
+	/**
+	 * Determine what page must be included. (set the $page variable to the path)
+	 */
 	require( "includes/pageSwitch.php" );
 
-	if( isset( $page ) )
+	/**
+	 * Check if the page variable holds an valid path to the web page if so include the webpage.
+	 */
+	if( isset( $page ) && is_file( $page ) )
 	{
-		if( is_file( $page ) )
-		{
-			include( $page );
-		}
-		else
-		{
-			echo "<h2>error: can't find file {$page}.";
-		}
+		include( $page );
+	}
+	else
+	{
+		$message = \CWSite\Helper\Message::getMessage("website.errors.pageNotFound", [ $page ] );
+		echo "<div id=\"contentvak\" style='min-height:100px;height: 100px'>" . $message . "</div>>";
 	}
 	?>
 </div>

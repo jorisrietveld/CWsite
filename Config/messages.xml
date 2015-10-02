@@ -1,0 +1,17 @@
+<?xml version="1.0" standalone="yes"?>
+<messages>
+    <website>
+        <errors>
+            <pageNotFound>
+                404 - The requested webpage: {{var}} was not found on this server.
+            </pageNotFound>
+        </errors>
+    </website>
+    <newsModel>
+        <exceptions>
+            <invalidGetOption>
+                The option: {(option)} is not an valid option.
+            </invalidGetOption>
+        </exceptions>
+    </newsModel>
+</messages>
