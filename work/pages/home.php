@@ -8,6 +8,22 @@
 	<h2>Laatste <font class='highlight'>nieuws</font></h2>
 	<ul id="slider_container">
 	<?php
+
+	try
+	{
+		$newsTable = new \CWSite\Models\Storage\NewsTable( $database );
+		$newsArticles = $newsTable->getAllActiveArticles();
+
+		foreach( $newsArticles as $newsArticle )
+		{
+
+		}
+	}
+	catch ( Exception $e )
+	{
+
+	}
+
 		$query = $database->query("SELECT `id`,`titel`,`content`,`afbeelding` FROM `".$config->dbinfo['prefix']."_nieuws` WHERE `active` = '1' ORDER BY `volgorde` DESC");
 		while($row = $database->fetch_assoc($query))
 		{

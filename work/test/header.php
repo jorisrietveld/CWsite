@@ -15,6 +15,8 @@ define( "CAMPUSWERK_SITE_COMPOSER_DIR", CAMPUSWERK_SITE_ROOT_DIR . "work/vendor/
 define( "CAMPUSWERK_SITE_SOURCE_DIR", CAMPUSWERK_SITE_ROOT_DIR . "work/src/" );
 define( "CAMPUSWERK_SITE_PAGES_DIR", CAMPUSWERK_SITE_ROOT_DIR . "work/pages/" );
 
+define( "WEBSERVER_ROOT_PATH", "/var/www/");
+
 /**
  * Debug levels are
  */

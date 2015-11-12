@@ -27,23 +27,22 @@ class News
 
 	public function insertNewsArticle( $title, $article, $image, $order )
 	{
-		$insertValues = [
-			"title"   => $title,
-			"article" => $article,
-			"image"   => $image,
-			"order"   => $order,
-			"date"    => ( new \FluentLiteral( "NOW()" ) )
-		];
+		$sql = "INSERT INTO " . self::TABLE_NAME;
+		$sql .= "( `title`, `article`, `image`, `order`, `active`, `date`) VALUES( ?, ?, ?, ?, ?, ? );";
 
-		$this->queryBuilder->insertInto( self::TABLE_NAME, $insertValues );
+		$result = $this->databaseModel->query( $sql, [ $title, $article, $image, $order, 1, "NOW()" ] );
+
+		return $result;
 	}
 
 	public function getNewsArticle( $id )
 	{
 		$colons      = [ "id", "title", "article", "image", "order" ];
-		$this->query = $this->queryBuilder->from( self::TABLE_NAME )->where( "id", $id );
+		$boundValues = [ ":id" => $id ];
+		$whereClause = [ "id = :id", $boundValues ];
+		$order       = "id DESC";
 
-		return $this->query->execute()->fetch();
+		$this->databaseModel->select( $colons, self::TABLE_NAME, $whereClause, $order );
 	}
 
 	public function deleteNewsArticle( $id )

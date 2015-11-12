@@ -6,18 +6,135 @@
 
 require( "header.php" );
 
-$newsModel = new \CWSite\Models\News( );
+$siteDatabase = new \CWSite\Models\Storage\SiteDatabase();
 
-echo '<h2>var_dump( $newsModel->getAllNewsMessages());</h2>';
-var_dump( $newsModel->getAllNewsMessages());
+$newsTable = new \CWSite\Models\Storage\NewsTable( $siteDatabase );
 
-echo '<h2></h2>';
-var_dump( $newsModel->getNewsArticle(1));
+/** ---------------------------------------------------------------------- Test all active articles
+ * Passed
+ */
+try
+{
+	$record = $newsTable->getAllActiveArticles();
 
-echo '<h2></h2>';
-var_dump( $newsModel->insertNewsArticle("test2", "blablabl alala sd skjflaksjd flkjsad lkfajskdlf as","image",1));
-echo '<h2></h2>';
+	/*echo "<h1>all active articles</h1>";
+	var_dump($record);*/
+}
+catch( Exception $e )
+{
+	var_dump( $e );
+}
 
-echo '<h2></h2>';
+/** ---------------------------------------------------------------------- Test all inactive articles
+ * Passed
+ */
+try
+{
+	$record = $newsTable->getAllInActiveArticles();
 
-echo '<h2></h2>';
+	/*echo "<h1>all inactive articles</h1>";
+	var_dump($record);*/
+}
+catch( Exception $e )
+{
+	var_dump( $e );
+}
+
+/** ---------------------------------------------------------------------- Test all articles
+ * Passed
+ */
+try
+{
+	$record = $newsTable->getAllArticles();
+
+	/*echo "<h1>all articles</h1>";
+	var_dump($record);*/
+}
+catch( Exception $e )
+{
+	var_dump( $e );
+}
+
+/** ---------------------------------------------------------------------- Test update articles
+ * Passed
+ */
+try
+{
+	/*echo "<h1>update articles</h1>";
+	var_dump( $newsTable->updateArticle( 1, [ "title" => "updatedTitle" ] ) );*/
+}
+catch( Exception $e )
+{
+	var_dump( $e );
+}
+
+/** ---------------------------------------------------------------------- Test get by id articles
+ * Passed
+ */
+try
+{
+	/*echo "<h1>get by id 1 articles</h1>";
+	var_dump( $newsTable->getArticleById( 1 ) );*/
+}
+catch( Exception $e )
+{
+	var_dump( $e );
+}
+
+/** ---------------------------------------------------------------------- Test delete articles
+ * Passed
+ */
+try
+{
+//	echo "<h1>delete by id 1 articles</h1>";
+//	var_dump( $newsTable->deleteArticle( 1 ) );
+//	var_dump( $newsTable->getArticleById( 1 ) );
+}
+catch( Exception $e )
+{
+	var_dump( $e );
+}
+
+/** ---------------------------------------------------------------------- Test hide articles
+ * Passed
+ */
+try
+{
+	/*
+		echo "<h1>hide articles</h1>";
+		var_dump( $newsTable->hideArticle( 2 ) );
+		var_dump( $newsTable->getArticleById( 2 ) );
+	}*/
+}
+catch( Exception $e )
+{
+	var_dump( $e );
+}
+
+/** ---------------------------------------------------------------------- Test show articles
+ * Passed
+ */
+try
+{
+	/*echo "<h1>show articles</h1>";
+	var_dump( $newsTable->showArticle( 2 ) );
+	var_dump( $newsTable->getArticleById( 2 ) );*/
+}
+catch( Exception $e )
+{
+	var_dump( $e );
+}
+
+/** ---------------------------------------------------------------------- Test insert articles
+ * Passed
+ */
+try
+{
+	echo "<h1>update articles</h1>";
+	var_dump( $newsTable->insertArticle( "title", "article", "image", "1" ) );
+	var_dump( end( $newsTable->getAllActiveArticles() ) );
+}
+catch( Exception $e )
+{
+	var_dump( $e );
+}

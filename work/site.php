@@ -1,11 +1,11 @@
 <?php
-//todo[ edit joris]
-
 // First require an configuration file with some constants.
 require( "constants.php" );
 
 // Then require an file that will register the composer autoloader.
 require( CAMPUSWERK_SITE_COMPOSER_DIR . "autoload.php" );
+
+$database = new \CWSite\Models\Storage\SiteDatabase();
 
 ?>
 <!DOCTYPE html "site created by campuswerk">
@@ -26,6 +26,7 @@ require( CAMPUSWERK_SITE_COMPOSER_DIR . "autoload.php" );
 	<link id="theme" href="css/theme_default.css" rel="stylesheet" type="text/css"/>
 
 	<?php
+		// TODO: fix bug: notice warning when $_COOKIE['theme'] is not set.
 		$script = '<script>$(document).ready(function(){ $(\'#colorswitcher .' . $_COOKIE[ 'theme' ] . '\').trigger(\'click\'); });</script>';
 		echo isset( $_COOKIE[ "theme" ] ) ? $script : '';
 	?>
