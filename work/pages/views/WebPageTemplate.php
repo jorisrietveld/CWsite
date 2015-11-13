@@ -13,7 +13,7 @@ $webPageContent = $webPage[ "content" ];
 echo "
 <div id=\"contentvak\">
 	<div class=\"ContentLeft\" style='background-color: #FFFFFF !important;'>
-		<img src=\"{$webPageImage}\">
+		<img src=\"{$webPageImage}\" style='width: 190px;'>
 	</div>
 	<div class=\"ContentRight\">
 		{$webPageContent}
