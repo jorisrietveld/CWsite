@@ -98,9 +98,7 @@ else
 		</div>
 		<?php
 	}
-	?>
 
-	<?php
 	/**
 	 * Determine what page must be included. (set the $page variable to the path)
 	 */
@@ -119,6 +117,13 @@ else
 		echo "<div id=\"contentvak\" style='min-height:100px;height: 100px'>" . $message . "</div>>";
 	}
 	?>
+	<div class="left">
+		&copy; Campus Winschoten <?php echo "2013 - ".date('Y'); ?>
+	</div>
+	<div class="right">
+		<!--<a href="">Home</a> | <a href="#">Inloggen</a>-->
+	</div>
 </div>
+
 </body>
 </html>
