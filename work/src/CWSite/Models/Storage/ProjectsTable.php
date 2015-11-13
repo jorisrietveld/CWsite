@@ -1,7 +1,7 @@
 <?php
 /**
  * Author: Joris Rietveld <jorisrietveld@protonmail.com>
- * Date: 11-11-15 - 16:21
+ * Date: 13-11-15 - 13:15
  */
 
 namespace CWSite\Models\Storage;
@@ -9,19 +9,20 @@ namespace CWSite\Models\Storage;
 use CWSite\Helper\DateAndTime;
 
 
-class NewsTable
+class ProjectsTable
 {
-	const TABLE_NAME = "news";
+	const TABLE_NAME = "projects";
 
 	protected $allFields = [
 		"id",
+		"project_code",
 		"title",
-		"article",
-		"image",
-		"order",
+		"description",
+		"link",
+		"release_date",
 		"active",
 		"date_added",
-		"date_modified"
+		"image"
 	];
 
 	protected $siteDatabase;
@@ -36,7 +37,7 @@ class NewsTable
 	/**
 	 * @return array
 	 */
-	public function getAllActiveArticles()
+	public function getAllActiveProjects( $order = "", $limit = "" )
 	{
 		$whereClause = [
 			"active = :active",
@@ -45,7 +46,7 @@ class NewsTable
 			]
 		];
 
-		$pdoStatementObj = $this->databaseConnection->select( self::TABLE_NAME, $this->allFields, $whereClause );
+		$pdoStatementObj = $this->databaseConnection->select( self::TABLE_NAME, $this->allFields, $whereClause, $order, $limit );
 
 		$resultSet = $pdoStatementObj->fetchAll( \PDO::FETCH_ASSOC );
 
@@ -54,13 +55,10 @@ class NewsTable
 			return $resultSet;
 		}
 
-		return [];
+		return [ ];
 	}
 
-	/**
-	 * @return array
-	 */
-	public function getAllInActiveArticles()
+	public function getAllInActiveProjects()
 	{
 		$whereClause = [
 			"active = :active",
@@ -78,13 +76,10 @@ class NewsTable
 			return $resultSet;
 		}
 
-		return [];
+		return [ ];
 	}
 
-	/**
-	 * @return array
-	 */
-	public function getAllArticles()
+	public function getAllProjects()
 	{
 		$pdoStatementObj = $this->databaseConnection->select( self::TABLE_NAME, $this->allFields );
 
@@ -95,14 +90,10 @@ class NewsTable
 			return $resultSet;
 		}
 
-		return [];
+		return [ ];
 	}
 
-	/**
-	 * @param $id
-	 * @return array
-	 */
-	public function getArticleById( $id )
+	public function getProjectById( $id )
 	{
 		$whereClause = [
 			"active = :active AND id = :id",
@@ -121,26 +112,43 @@ class NewsTable
 			return $resultSet[ 0 ];
 		}
 
-		return [];
+		return [ ];
 	}
 
-	/**
-	 * @param $title
-	 * @param $article
-	 * @param $image
-	 * @param $order
-	 * @return bool
-	 */
-	public function insertArticle( $title, $article, $image, $order )
+	public function getProjectByProjectCode( $projectCode )
+	{
+		$whereClause = [
+			"active = :active AND project_code = :projectCode",
+			[
+				":active"      => 1,
+				":projectCode" => $projectCode
+			]
+		];
+
+		$pdoStatementObj = $this->databaseConnection->select( self::TABLE_NAME, $this->allFields, $whereClause );
+
+		$resultSet = $pdoStatementObj->fetchAll( \PDO::FETCH_ASSOC );
+
+		if( count( $resultSet ) )
+		{
+			return $resultSet[ 0 ];
+		}
+
+		return [ ];
+	}
+
+	public function insertProject( $title, $description, $projectCode, $link, $release_date, $image )
 	{
 		$insertData = [
+			"project_code"  => $projectCode,
 			"title"         => $title,
-			"article"       => $article,
-			"image"         => $image,
-			"order"         => $order,
+			"description"   => $description,
+			"link"          => $link,
+			"release_date"  => $release_date,
 			"active"        => 1,
 			"date_added"    => DateAndTime::ConvertToMysqlDateTime( "now" ),
-			"date_modified" => DateAndTime::ConvertToMysqlDateTime( "now" )
+			"date_modified" => DateAndTime::ConvertToMysqlDateTime( "now" ),
+		    "image" => $image
 		];
 
 		$insertedRows = $this->databaseConnection->insert( self::TABLE_NAME, $insertData );
@@ -148,51 +156,34 @@ class NewsTable
 		return (bool)$insertedRows;
 	}
 
-	/**
-	 * @param $id
-	 * @return bool
-	 */
-	public function hideArticle( $id )
+	public function hideProject( $id )
 	{
-		$updateSetData = [ "active" => 0, "date_modified" => DateAndTime::ConvertToMysqlDateTime( "now" ) ];
-		$updatedRows   = $this->databaseConnection->update( self::TABLE_NAME, $updateSetData, $id );
+		$updateSetData = [ "active" => 0 ];
+
+		$updatedRows = $this->databaseConnection->update( self::TABLE_NAME, $updateSetData, $id );
 
 		return (bool)$updatedRows;
 	}
 
-	/**
-	 * @param $id
-	 * @return bool
-	 */
-	public function showArticle( $id )
+	public function showProject( $id )
 	{
-		$updateSetData = [ "active" => 1, "date_modified" => DateAndTime::ConvertToMysqlDateTime( "now" ) ];
-		$updatedRows   = $this->databaseConnection->update( self::TABLE_NAME, $updateSetData, $id );
+		$updateSetData = [ "active" => 1 ];
+
+		$updatedRows = $this->databaseConnection->update( self::TABLE_NAME, $updateSetData, $id );
 
 		return (bool)$updatedRows;
 	}
 
-	/**
-	 * @param $id
-	 * @return bool
-	 */
-	public function deleteArticle( $id )
+	public function deleteProject( $id )
 	{
 		$deletedRows = $this->databaseConnection->delete( self::TABLE_NAME, $id );
 
 		return (bool)$deletedRows;
 	}
 
-	/**
-	 * @param       $id
-	 * @param array $setKeyToValue
-	 * @return bool
-	 */
-	public function updateArticle( $id, Array $setKeyToValue )
+	public function updateProject( $id, Array $setKeyToValue )
 	{
-		$setKeyToValue = array_merge( $setKeyToValue, [ "date_modified" => DateAndTime::ConvertToMysqlDateTime( "now" ) ] );
-
-		$updatedRows   = $this->databaseConnection->update( self::TABLE_NAME, $setKeyToValue, $id );
+		$updatedRows = $this->databaseConnection->update( self::TABLE_NAME, $setKeyToValue, $id );
 
 		return (bool)$updatedRows;
 	}

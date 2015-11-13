@@ -116,9 +116,9 @@ catch( Exception $e )
  */
 try
 {
-	/*echo "<h1>show articles</h1>";
+	echo "<h1>show articles</h1>";
 	var_dump( $newsTable->showArticle( 2 ) );
-	var_dump( $newsTable->getArticleById( 2 ) );*/
+	var_dump( $newsTable->getArticleById( 2 ) );
 }
 catch( Exception $e )
 {
@@ -130,9 +130,9 @@ catch( Exception $e )
  */
 try
 {
-	echo "<h1>update articles</h1>";
+	/*echo "<h1>update articles</h1>";
 	var_dump( $newsTable->insertArticle( "title", "article", "image", "1" ) );
-	var_dump( end( $newsTable->getAllActiveArticles() ) );
+	var_dump( end( $newsTable->getAllActiveArticles() ) );*/
 }
 catch( Exception $e )
 {

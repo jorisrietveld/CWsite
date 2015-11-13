@@ -7,6 +7,26 @@ require( CAMPUSWERK_SITE_COMPOSER_DIR . "autoload.php" );
 
 $database = new \CWSite\Models\Storage\SiteDatabase();
 
+$colorSwitcher = "";
+
+// Theme switcher
+if( !isset( $_COOKIE[ 'theme' ] ) )
+{
+	$logo =  '<img id="logo" src="img/logo_default.png"/>';
+}
+else
+{
+	$theme = $_COOKIE["theme"];
+	$logo = "<img id=\"logo\" src=\"img/logo_{$theme}.png\"/>";
+
+	$colorSwitcher = "
+			<script>
+				$(document).ready(function(){
+					$('#colorswitcher .{$theme}').trigger('click');
+				});
+			</script>";
+
+}
 ?>
 <!DOCTYPE html "site created by campuswerk">
 <html>
@@ -24,35 +44,32 @@ $database = new \CWSite\Models\Storage\SiteDatabase();
 	</script>
 	<link href="css/style.css" rel="stylesheet" type="text/css"/>
 	<link id="theme" href="css/theme_default.css" rel="stylesheet" type="text/css"/>
-
-	<?php
-		// TODO: fix bug: notice warning when $_COOKIE['theme'] is not set.
-		$script = '<script>$(document).ready(function(){ $(\'#colorswitcher .' . $_COOKIE[ 'theme' ] . '\').trigger(\'click\'); });</script>';
-		echo isset( $_COOKIE[ "theme" ] ) ? $script : '';
-	?>
-
+	<?= $colorSwitcher /* This is the color switcher function */?>
 </head>
 <body>
 <div id="container">
 	<div id="logocontainer">
-		<?php
-		if( !isset( $_COOKIE[ 'theme' ] ) )
-		{
-			echo '<img id="logo" src="img/logo_default.png"/>';
-		}
-		else
-		{
-			echo '<img id="logo" src="img/logo_' . $_COOKIE[ 'theme' ] . '.png"/>';
-		}
-		?>
+		<?= $logo /* This is the img with the logo */?>
 	</div>
 
 	<div id="nav">
 		<ul>
 			<div id="menublock_selected"></div>
-			<?php
-			include( "includes/menu.php" );
-			?>
+				<li>
+					<a href="site.php">Home</a>
+				</li>
+				<li>
+					<a href="site.php?id=2">Over ons</a>
+				</li>
+				<li>
+					<a href="site.php?id=3">Projecten</a>
+				</li>
+				<li>
+					<a href="site.php?id=4">Ontwikkelaars</a>
+				</li>
+				<li>
+					<a href="site.php?id=5">Contact</a>
+				</li>
 		</ul>
 	</div>
 
